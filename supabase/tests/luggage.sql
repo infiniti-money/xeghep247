@@ -13,7 +13,7 @@ insert into passenger_bookings(id,passenger_id,trip_id,service_type,from_stop,to
 ('30000000-0000-0000-0000-000000000003','00000000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000001','tourism',1,2,1,100000);
 update passenger_bookings set luggage_kg=15 where id in ('30000000-0000-0000-0000-000000000001','30000000-0000-0000-0000-000000000002');
 update passenger_bookings set luggage_kg=21 where id='30000000-0000-0000-0000-000000000003';
-do $
+do $luggage_test$
 declare a uuid:='00000000-0000-0000-0000-000000000002'; b uuid:='30000000-0000-0000-0000-000000000001'; c uuid:='30000000-0000-0000-0000-000000000002'; d uuid:='30000000-0000-0000-0000-000000000003'; deadline timestamptz;
 begin
  begin perform hold_booking_seats(a,d,array['A1']); raise exception 'oversize luggage accepted'; exception when raise_exception then if sqlerrm<>'luggage_capacity_exceeded' then raise; end if; end;
@@ -30,5 +30,5 @@ begin
  perform hold_booking_seats(a,b,array['A1']);
  if has_function_privilege('authenticated','public.hold_booking_seats(uuid,uuid,text[])','execute') then raise exception 'client privilege'; end if;
  begin perform cancel_booking_seats('00000000-0000-0000-0000-000000000001',b); raise exception 'wrong actor accepted'; exception when raise_exception then if sqlerrm<>'booking_not_found' then raise; end if; end;
-end $$;
+end $luggage_test$;
 rollback;
