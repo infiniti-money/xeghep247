@@ -21,3 +21,27 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: test -f out/index.html
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_PASSWORD: ci-only
+          POSTGRES_DB: xeghep_test
+        options: >-
+          --health-cmd "pg_isready -U postgres -d xeghep_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Schema and security tests
+        env:
+          DB_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          for file in supabase/tests/bootstrap.sql supabase/schema/core.sql supabase/tests/core.sql; do
+            docker exec -i "$DB_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d xeghep_test < "$file"
+          done

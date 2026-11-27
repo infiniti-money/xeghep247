@@ -1,8 +1,8 @@
 # XeGhép247 — Roadmap
 Free tier only. Cloudflare Pages ứng dụng chính; GitHub Pages tài liệu/demo phi thương mại. Ba mảng: ghép hàng, ghép người, ghép ghế du lịch.
-- [ ] P0: Next.js static export + TS + Tailwind, Workers, CI, tài liệu deploy. PR đầu tiên bổ sung scaffold và demo UI; cần CI xanh, lockfile và cấu hình hosting.
-- [ ] P1: PostGIS migrations users/vehicles/trips/orders/matches/passenger_bookings/documents/events, lịch du lịch, điểm dừng có thứ tự, seat layout, inventory, reservations, RLS, GiST, ETA.
-- [ ] P2: PostGIS corridor 10km, chiều tuyến, ETA, tải trọng/thể tích/ghế; transaction atomic chống double booking, giữ ghế có hạn và hoàn sức chứa idempotent. Pure prefilter/seat interval tests đã viết, chưa thay thế database.
+- [ ] P0: Scaffold Next.js + Tailwind, Worker, demo UI, CI đã merge PR #1 (CI frontend success). Còn lockfile và hosting.
+- [ ] P1: SQL draft 13 bảng, PostGIS, GiST, RLS owner-only, exclusion constraint ghế theo chặng; CI database bổ sung. Cần nghiệm thu CI, Supabase local/auth/storage/advisors và tạo migration chính thức.
+- [ ] P2: PostGIS corridor 10km, chiều tuyến, ETA, tải trọng/thể tích/ghế; transaction atomic chống double booking, giữ ghế có hạn và hoàn sức chứa idempotent.
 - [ ] P3: auth email/password, hồ sơ, xe, chuyến, hàng, đặt ghế, match APIs, VND pricing; OTP tùy chọn.
 - [ ] P4: UI tài xế/chủ hàng/hành khách/nhà xe/admin, Leaflet/routing cache, ghế du lịch một chiều/khứ hồi, lịch trình nhiều điểm.
 - [ ] P5: kiểm thử RLS, concurrency, security, CI/CD, deployment; xác minh yêu cầu pháp lý/an toàn trước thương mại.
