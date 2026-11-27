@@ -1,0 +1,26 @@
+begin;
+set local search_path=public,extensions,pg_catalog;
+insert into auth.users values ('00000000-0000-0000-0000-000000000001'),('00000000-0000-0000-0000-000000000002'),('00000000-0000-0000-0000-000000000003');
+insert into users(id,full_name,role) values ('00000000-0000-0000-0000-000000000001','Driver','driver'),('00000000-0000-0000-0000-000000000002','Passenger','passenger'),('00000000-0000-0000-0000-000000000003','Other','passenger');
+insert into vehicles(id,driver_id,license_plate,vehicle_type,passenger_seats,passenger_eligible) values ('10000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000001','TEST-03','van',1,true);
+insert into trips(id,driver_id,vehicle_id,service_type,origin_address,origin_lat,origin_lng,dest_address,dest_lat,dest_lng,route_polyline,departure_time,estimated_arrival_time,available_seats) values ('20000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001','tourism','A',21,105,'B',21.5,106,ST_GeomFromText('LINESTRING(105 21,106 21.5)',4326),now()+interval '1 day',now()+interval '1 day 2 hours',1);
+insert into trip_stops select '20000000-0000-0000-0000-000000000001',i,'Stop '||i,ST_SetSRID(ST_MakePoint(105+i*0.3,21+i*0.15),4326),now()+interval '1 day'+i*interval '30 minutes' from generate_series(0,3) i;
+insert into seat_layouts values ('10000000-0000-0000-0000-000000000001','A1',1,1);
+insert into trip_seats values ('20000000-0000-0000-0000-000000000001','A1');
+insert into passenger_bookings(id,passenger_id,trip_id,service_type,from_stop,to_stop,seats,price_vnd) values ('30000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000002','20000000-0000-0000-0000-000000000001','tourism',0,2,1,100000);
+do $$declare a uuid:='00000000-0000-0000-0000-000000000002'; d uuid:='00000000-0000-0000-0000-000000000001'; b uuid:='30000000-0000-0000-0000-000000000001';
+begin
+ perform hold_booking_seats(a,b,array['A1']);
+ begin perform confirm_booking_seats('00000000-0000-0000-0000-000000000003',b);raise exception 'unauthorized';exception when raise_exception then if sqlerrm<>'booking_not_found' then raise;end if;end;
+ if confirm_booking_seats(a,b)<>'held' or confirm_booking_seats(a,b)<>'held' then raise exception 'one party confirmed';end if;
+ update seat_reservations set expires_at=clock_timestamp()-interval '1 second' where booking_id=b;
+ begin perform confirm_booking_seats(d,b);raise exception 'expired accepted';exception when raise_exception then if sqlerrm<>'hold_expired' then raise;end if;end;
+ perform hold_booking_seats(a,b,array['A1']);
+ if confirm_booking_seats(d,b)<>'held' then raise exception 'stale approval';end if;
+ if confirm_booking_seats(a,b)<>'confirmed' or confirm_booking_seats(d,b)<>'confirmed' then raise exception 'confirmation failed';end if;
+ if (select status from seat_reservations where booking_id=b and status='confirmed') is distinct from 'confirmed' then raise exception 'reservation not confirmed';end if;
+ perform cancel_booking_seats(a,b);perform cancel_booking_seats(a,b);
+ if exists(select 1 from seat_reservations where booking_id=b and status in ('held','confirmed')) then raise exception 'cancel failed';end if;
+ if has_function_privilege('authenticated','public.confirm_booking_seats(uuid,uuid)','execute') then raise exception 'client privilege';end if;
+end $$;
+rollback;
