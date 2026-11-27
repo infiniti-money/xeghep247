@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['docs/**', '.github/workflows/pages.yml']
+    paths: ['docs/**', 'frontend/**', '.github/workflows/pages.yml']
 permissions:
   contents: read
   pages: write
@@ -19,9 +19,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build noncommercial demo
+        working-directory: frontend
+        env:
+          DEMO_BASE_PATH: /xeghep247/demo
+        run: |
+          npm install --no-audit --no-fund
+          npm test
+          npm run build
+          test -f out/index.html
+          grep -q '/xeghep247/demo/_next/' out/index.html
+      - name: Assemble documentation and demo
+        run: |
+          mkdir -p _site/demo
+          cp -a docs/. _site/
+          cp -a frontend/out/. _site/demo/
+          touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: _site
       - uses: actions/deploy-pages@v4
         id: deployment
