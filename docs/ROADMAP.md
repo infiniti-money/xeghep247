@@ -4,7 +4,7 @@ Free tier only. Cloudflare Pages ứng dụng chính; GitHub Pages tài liệu/d
 - [ ] P1: SQL draft 13 bảng, PostGIS, GiST, RLS owner-only, exclusion constraint ghế theo chặng; CI database bổ sung. Cần nghiệm thu CI, Supabase local/auth/storage/advisors và tạo migration chính thức.
 - [ ] P2: SQL cargo candidate lookup (10km, chiều tuyến, ETA tuyến tính sơ bộ, tải trọng/thể tích), PR #3 đã merge, CI đạt; PR #4 đã merge sau CI xanh: transaction giữ/hủy ghế, hết hạn lazy cleanup. PR #5 đã merge sau CI xanh: xác nhận hai bên và kiểm thử hết hạn/reset quyền xác nhận. Kiểm thử concurrency nhiều session đã merge, CI main 6e4160f đạt. Bổ sung giới hạn hành lý theo chặng dưới khóa chuyến, chờ CI; còn kiểm thử tổng hành lý nhiều ghế, API xác thực và cargo atomic.
 - [ ] P3: auth email/password, hồ sơ, xe, chuyến, hàng, đặt ghế, match APIs, VND pricing; OTP tùy chọn.
-- [ ] P4: UI tài xế/chủ hàng/hành khách/nhà xe/admin, Leaflet/routing cache, ghế du lịch một chiều/khứ hồi, lịch trình nhiều điểm.
+- [ ] P4: UI tài xế/chủ hàng/hành khách/nhà xe/admin, Leaflet/routing cache, ghế du lịch một chiều/khứ hồi, lịch trình nhiều điểm. PR #8 demo mobile-first đã merge, Pages workflow 46002964346 đạt; bổ sung cabin 9/16 ghế, nhãn truy cập và chú giải, chờ CI. Còn E2E trình duyệt và HTTP smoke.
 - [ ] P5: kiểm thử RLS, concurrency, security, CI/CD, deployment; xác minh yêu cầu pháp lý/an toàn trước thương mại.
 - [ ] P6: release v0.1.0 sau khi nghiệm thu end-to-end.
 - [ ] P7: hoàn thiện từ phản hồi.
