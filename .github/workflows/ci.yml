@@ -42,6 +42,6 @@ jobs:
           DB_CONTAINER: ${{ job.services.postgres.id }}
         run: |
           set -euo pipefail
-          for file in supabase/tests/bootstrap.sql supabase/schema/core.sql supabase/tests/core.sql supabase/schema/matching.sql supabase/tests/matching.sql; do
+          for file in supabase/tests/bootstrap.sql supabase/schema/core.sql supabase/tests/core.sql supabase/schema/matching.sql supabase/tests/matching.sql supabase/schema/seat_lifecycle.sql supabase/tests/seat_lifecycle.sql; do
             docker exec -i "$DB_CONTAINER" psql -X -v ON_ERROR_STOP=1 -U postgres -d xeghep_test < "$file"
           done
