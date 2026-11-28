@@ -1,6 +1,6 @@
 # XeGhép247 — Roadmap
 Free tier only. Cloudflare Pages là ứng dụng chính thức; GitHub Pages chỉ tài liệu kỹ thuật, ngừng triển khai /demo/ công khai. Ba mảng: ghép hàng, ghép người, ghép ghế du lịch.
-- [ ] P0: Scaffold Next.js + Tailwind, Worker, CI đã merge PR #1. Còn lockfile và hosting Cloudflare. Chuyển Pages sang tài liệu-only (chờ CI/deploy xác minh).
+- [ ] P0: Scaffold Next.js + Tailwind, Worker, CI đã merge PR #1. Còn lockfile và hosting Cloudflare. Pages tài liệu-only: CI và deploy workflow 46142144924 đạt; HTTP chưa xác minh.
 - [ ] P1: SQL draft 13 bảng, PostGIS, GiST, RLS owner-only, exclusion constraint ghế theo chặng; CI database bổ sung. Cần nghiệm thu Supabase local/auth/storage/advisors và tạo migration chính thức.
 - [ ] P2: SQL cargo candidate lookup (10km, chiều tuyến, ETA tuyến tính sơ bộ, tải trọng/thể tích), PR #3 đã merge. PR #4 giữ/hủy ghế, PR #5 xác nhận hai bên, PR #6 concurrency, PR #7 giới hạn hành lý theo chặng đã merge. Còn kiểm thử tổng hành lý nhiều ghế, API xác thực và cargo atomic.
 - [ ] P3: Ưu tiên API thật và auth email/password, hồ sơ, xe, chuyến, hàng, đặt ghế, match APIs, VND pricing; OTP tùy chọn.
@@ -9,3 +9,5 @@ Free tier only. Cloudflare Pages là ứng dụng chính thức; GitHub Pages ch
 - [ ] P6: release v0.1.0 sau khi nghiệm thu end-to-end.
 - [ ] P7: hoàn thiện từ phản hồi.
 Mỗi lượt kiểm tra main/PR/CI trước, thực hiện mã nguồn thực tế, cập nhật roadmap, chỉ merge khi CI đạt. Không lộ secrets, không kích hoạt dịch vụ trả phí, không tuyên bố deployment chưa xác minh.
+
+P4: Chặn tìm chuyến giả, đăng chuyến và đăng nhập khi API chưa sẵn sàng; fixture chuyến chỉ trong tests. Giao diện chi tiết/ghế sẽ nối lại với dữ liệu API thật. Chờ CI và kiểm thử trình duyệt.
