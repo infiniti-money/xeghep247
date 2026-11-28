@@ -1,5 +1,6 @@
 "use client";
-import {useState} from "react";
+import {useState,useEffect} from "react";
+import {checkApi} from "./api-health.mjs";
 type Mode="passenger"|"cargo"|"tourism";
 type View="home"|"activity"|"driver"|"account";
 const modes:{id:Mode;title:string;desc:string;icon:string}[]=[{id:"passenger",title:"Xe ghép",desc:"Đi chung, đưa đón tận nơi",icon:"🚗"},{id:"cargo",title:"Gửi hàng",desc:"Ghép hàng dọc tuyến",icon:"📦"},{id:"tourism",title:"Ghế du lịch",desc:"Ghép đoàn, limousine",icon:"🚌"}];
@@ -9,13 +10,15 @@ export default function Home(){
  const [mode,setMode]=useState<Mode>("passenger"),[view,setView]=useState<View>("home");
  const [origin,setOrigin]=useState(""),[destination,setDestination]=useState(""),[date,setDate]=useState(""),[quantity,setQuantity]=useState("1"),[volume,setVolume]=useState("0.1"),[round,setRound]=useState(false),[returnDate,setReturnDate]=useState("");
  const [message,setMessage]=useState("");
+ const [apiStatus,setApiStatus]=useState("checking");
+ useEffect(()=>{let active=true;checkApi(process.env.NEXT_PUBLIC_API_URL).then(status=>{if(active)setApiStatus(status)});return()=>{active=false}},[]);
  function reset(){setMessage("");}
  function changeMode(m:Mode){setMode(m);setQuantity("1");setRound(false);reset();}
  function go(v:View){setView(v);setMessage("");}
  function search(e:React.FormEvent){e.preventDefault();setMessage("");if(!origin.trim()||!destination.trim()||normalize(origin)===normalize(destination)){setMessage("Vui lòng nhập hai địa điểm khác nhau.");return;}if(round&&mode==="tourism"&&returnDate<date){setMessage("Ngày về phải từ ngày đi trở đi.");return;}setMessage("Dịch vụ tìm chuyến chưa kết nối. Vui lòng quay lại sau.");}
  return <div className="app-shell"><header className="topbar"><a className="brand" href="#" onClick={e=>{e.preventDefault();go("home")}}><span className="brand-mark">X</span><span>XeGhép<span className="brand-accent">247</span><small>Đi cùng nhau, tiết kiệm hơn</small></span></a><span className="demo-tag">ĐANG PHÁT TRIỂN</span></header>
  <main className="content">
- <div className="notice" role="note"><strong>Dịch vụ chưa mở</strong> · Hệ thống chưa kết nối dữ liệu vận hành. Chưa nhận đặt xe hoặc đăng chuyến.</div>
+ <div className="notice" role="note"><strong>Dịch vụ chưa mở</strong> · {apiStatus==="checking"?"Đang kiểm tra kết nối.":apiStatus==="ready"?"API báo sẵn sàng; chức năng nghiệp vụ chưa được kết nối.":apiStatus==="database_unavailable"?"API chưa có cơ sở dữ liệu sẵn sàng.":apiStatus==="unconfigured"?"Chưa cấu hình API.":"Không thể kết nối API."} Chưa nhận đặt xe hoặc đăng chuyến.</div>
  {view==="home"&&<><section className="hero"><div className="eyebrow">DI CHUYỂN THÔNG MINH</div><h1>Mọi hành trình,<br/>đều có bạn đồng hành.</h1><p>Ghép người, ghép hàng, ghép ghế du lịch trên cùng một nền tảng.</p><div className="hero-road" aria-hidden="true">🚗 ━ ━ ━ 📍</div></section>
  <div className="service-grid">{modes.map(m=><button key={m.id} type="button" aria-pressed={m.id===mode} className={"service "+(m.id===mode?"active":"")} onClick={()=>changeMode(m.id)}><span className="service-icon">{m.icon}</span><strong>{m.title}</strong><small>{m.desc}</small></button>)}</div>
  <section className="panel"><h2>Tìm chuyến phù hợp</h2><form onSubmit={search} className="form-grid">

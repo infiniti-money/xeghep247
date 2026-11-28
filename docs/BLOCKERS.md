@@ -5,3 +5,5 @@
 - API: hoàn thiện xác thực, tìm chuyến, đăng chuyến, ghép hàng và đặt ghế thật; frontend không được gửi giao dịch hoặc hiển thị dữ liệu giả như dữ liệu thật khi thiếu cấu hình.
 - Vận hành: bảng giá, hotline, thông tin doanh nghiệp, xác minh giấy phép vận tải/du lịch và bảo vệ dữ liệu trước thương mại.
 Không chặn việc viết code/test độc lập; không kích hoạt billing.
+
+- Frontend: cấu hình NEXT_PUBLIC_API_URL là origin HTTPS của Worker (không chứa secrets); Worker cần CORS cho origin Cloudflare Pages và health database readiness thực tế. Health không thay thế xác thực hoặc nghiệm thu nghiệp vụ.
