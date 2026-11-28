@@ -1,0 +1,68 @@
+[
+  {
+    "id": "P1",
+    "mode": "passenger",
+    "origin": "Hà Nội",
+    "destination": "Hưng Yên",
+    "time": "08:00",
+    "vehicle": "Xe 7 chỗ",
+    "price": 120000,
+    "capacity": 4
+  },
+  {
+    "id": "P2",
+    "mode": "passenger",
+    "origin": "Hà Nội",
+    "destination": "Hải Phòng",
+    "time": "10:30",
+    "vehicle": "Limousine",
+    "price": 220000,
+    "capacity": 5
+  },
+  {
+    "id": "C1",
+    "mode": "cargo",
+    "origin": "Hà Nội",
+    "destination": "Hưng Yên",
+    "time": "09:00",
+    "vehicle": "Xe tải 1 tấn",
+    "price": 4000,
+    "capacity": 350,
+    "volume": 4
+  },
+  {
+    "id": "C2",
+    "mode": "cargo",
+    "origin": "Hưng Yên",
+    "destination": "Hải Phòng",
+    "time": "14:30",
+    "vehicle": "Xe van",
+    "price": 5000,
+    "capacity": 180,
+    "volume": 2
+  },
+  {
+    "id": "T1",
+    "mode": "tourism",
+    "origin": "Hà Nội",
+    "destination": "Hạ Long",
+    "time": "07:00",
+    "vehicle": "Limousine 9 chỗ",
+    "price": 250000,
+    "capacity": 7,
+    "seats": 9,
+    "round": true
+  },
+  {
+    "id": "T2",
+    "mode": "tourism",
+    "origin": "Hà Nội",
+    "destination": "Ninh Bình",
+    "time": "08:30",
+    "vehicle": "Xe du lịch 16 chỗ",
+    "price": 180000,
+    "capacity": 14,
+    "seats": 16,
+    "round": false
+  }
+]
