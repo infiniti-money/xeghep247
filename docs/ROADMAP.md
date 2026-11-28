@@ -11,3 +11,5 @@ Free tier only. Cloudflare Pages là ứng dụng chính thức; GitHub Pages ch
 Mỗi lượt kiểm tra main/PR/CI trước, thực hiện mã nguồn thực tế, cập nhật roadmap, chỉ merge khi CI đạt. Không lộ secrets, không kích hoạt dịch vụ trả phí, không tuyên bố deployment chưa xác minh.
 
 P4: Chặn tìm chuyến giả, đăng chuyến và đăng nhập khi API chưa sẵn sàng; fixture chuyến chỉ trong tests. Giao diện chi tiết/ghế sẽ nối lại với dữ liệu API thật. Chờ CI và kiểm thử trình duyệt.
+
+P3/P4: thêm kiểm tra health API HTTPS, timeout, xác minh service/database và trạng thái kết nối trên UI. Không mở giao dịch dựa vào health. Chờ CI; API nghiệp vụ và auth vẫn chưa triển khai.
