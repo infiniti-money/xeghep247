@@ -5,3 +5,7 @@ export function itineraryFor(id) {
  };
  return Object.hasOwn(routes,id) ? routes[id] : [];
 }
+
+export function validSegment(stops, pickup, dropoff) {
+ return Array.isArray(stops) && Number.isInteger(pickup) && Number.isInteger(dropoff) && pickup >= 0 && pickup < dropoff && dropoff < stops.length;
+}
